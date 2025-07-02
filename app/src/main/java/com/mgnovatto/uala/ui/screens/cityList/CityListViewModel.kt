@@ -13,7 +13,6 @@ class CityListViewModel @Inject constructor(
 ) : ViewModel() {
 
     init {
-        println("CityListViewModel LLEGO!")
         viewModelScope.launch {
             repository.downloadCities()
         }

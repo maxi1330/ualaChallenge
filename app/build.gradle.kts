@@ -15,6 +15,10 @@ if (localPropertiesFile.exists()) {
     localProperties.load(localPropertiesFile.inputStream())
 }
 
+hilt {
+    enableAggregatingTask = false
+}
+
 android {
     namespace = "com.mgnovatto.uala"
     compileSdk = 36
