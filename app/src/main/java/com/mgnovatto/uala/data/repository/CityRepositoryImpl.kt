@@ -10,12 +10,16 @@ class CityRepositoryImpl @Inject constructor(
     private val apiService: ApiService
 ) : CityRepository {
 
-    override suspend fun downloadCities() {
-        withContext(Dispatchers.IO) {
+    override suspend fun downloadCities(): Boolean {
+        return withContext(Dispatchers.IO) {
             try {
-                Log.i("CityRepository", "Inicio descarga")
+                Log.i("CityRepository", "Iniciando descarga...")
+                apiService.downloadCities()
+                Log.i("CityRepository", "¡Descarga exitosa!")
+                true
             } catch (e: Exception) {
                 Log.e("CityRepository", "Error descargando")
+                false
             }
         }
     }

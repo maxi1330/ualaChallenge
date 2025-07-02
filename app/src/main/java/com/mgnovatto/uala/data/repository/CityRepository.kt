@@ -1,5 +1,5 @@
 package com.mgnovatto.uala.data.repository
 
 interface CityRepository {
-    suspend fun downloadCities()
+    suspend fun downloadCities(): Boolean
 }
