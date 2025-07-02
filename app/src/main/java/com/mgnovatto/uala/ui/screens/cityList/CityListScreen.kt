@@ -1,5 +1,6 @@
 package com.mgnovatto.uala.ui.screens.cityList
 
+import android.net.Uri
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,12 +11,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.mgnovatto.uala.domain.model.City
 import com.mgnovatto.uala.ui.screens.cityList.components.CityListColumn
 import com.mgnovatto.uala.ui.screens.cityList.components.MapComposable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 @Composable
-fun CityListScreen() {
+fun CityListScreen(
+    navController: NavController
+) {
     var searchText by remember { mutableStateOf("") }
     var favoritesOnly by remember { mutableStateOf(false) }
     var cities by remember {
@@ -29,7 +35,6 @@ fun CityListScreen() {
         )
     }
     var selectedCity by remember { mutableStateOf<City?>(null) }
-
 
     val filteredCities = cities.filter { city ->
         val matchesSearch = city.name.startsWith(searchText, ignoreCase = true)
@@ -53,13 +58,19 @@ fun CityListScreen() {
                     favoritesOnly = favoritesOnly,
                     onFavoritesOnlyChange = { favoritesOnly = it },
                     cities = filteredCities,
-                    onToggleFavorite = { println("OnToggleFavorite") },
+                    onToggleFavorite = { cityId ->
+                        cities = cities.map { if (it.id == cityId) it.copy(isFavorite = !it.isFavorite) else it }
+                    },
                     onCityClick = { city ->
                         selectedCity = city
+                    },
+                    onInfoClick = { city ->
+                        val cityJson = Json.encodeToString(city)
+                        navController.navigate("detail/${Uri.encode(cityJson)}")
                     }
                 )
                 MapComposable(
-                    modifier = Modifier.weight(0.5f),
+                    modifier = Modifier.weight(0.6f),
                     cityName = selectedCity?.name,
                     lat = selectedCity?.lat,
                     lon = selectedCity?.lon
@@ -77,7 +88,12 @@ fun CityListScreen() {
                     cities = cities.map { if (it.id == cityId) it.copy(isFavorite = !it.isFavorite) else it }
                 },
                 onCityClick = { city ->
-                    selectedCity = city
+                    val cityJson = Json.encodeToString(city)
+                    navController.navigate("map/${Uri.encode(cityJson)}")
+                },
+                onInfoClick = { city ->
+                    val cityJson = Json.encodeToString(city)
+                    navController.navigate("detail/${Uri.encode(cityJson)}")
                 }
             )
         }

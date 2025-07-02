@@ -1,7 +1,6 @@
 package com.mgnovatto.uala.ui.screens.cityList.components
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
@@ -18,11 +17,11 @@ fun CityListColumn(
     onFavoritesOnlyChange: (Boolean) -> Unit,
     cities: List<City>,
     onToggleFavorite: (Int) -> Unit,
-    onCityClick: (City) -> Unit
+    onCityClick: (City) -> Unit,
+    onInfoClick: (City) -> Unit
 ) {
     Column(modifier) {
         SearchBarWithFilter(
-            modifier = Modifier.fillMaxWidth(),
             searchText = searchText,
             onSearchTextChange = onSearchTextChange,
             favoritesOnly = favoritesOnly,
@@ -34,7 +33,7 @@ fun CityListColumn(
                     city = city,
                     onToggleFavorite = { onToggleFavorite(city.id) },
                     onRowClick = { onCityClick(city) },
-                    onInfoClick = { println("Click on Info") }
+                    onInfoClick = { onInfoClick(city) }
                 )
                 HorizontalDivider()
             }
