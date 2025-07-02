@@ -5,6 +5,7 @@ import com.mgnovatto.uala.BuildConfig
 import com.mgnovatto.uala.data.remote.ApiService
 import com.mgnovatto.uala.data.repository.CityRepository
 import com.mgnovatto.uala.data.repository.CityRepositoryImpl
+import com.mgnovatto.uala.data.store.UserDataStore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,7 +32,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideCityRepository(api: ApiService): CityRepository {
-        return CityRepositoryImpl(api)
+    fun provideCityRepository(api: ApiService, dataStore: UserDataStore): CityRepository {
+        return CityRepositoryImpl(api, dataStore)
     }
 }
