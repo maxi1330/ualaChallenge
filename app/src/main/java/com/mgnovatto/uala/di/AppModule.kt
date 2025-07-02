@@ -1,6 +1,7 @@
 package com.mgnovatto.uala.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.mgnovatto.uala.BuildConfig
 import com.mgnovatto.uala.data.remote.ApiService
 import com.mgnovatto.uala.data.repository.CityRepository
 import com.mgnovatto.uala.data.repository.CityRepositoryImpl
@@ -22,7 +23,7 @@ object AppModule {
     fun provideApiService(): ApiService {
         val json = Json { ignoreUnknownKeys = true }
         return Retrofit.Builder()
-            .baseUrl("https://gist.githubusercontent.com/")
+            .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .build()
             .create(ApiService::class.java)
