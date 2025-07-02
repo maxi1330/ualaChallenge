@@ -4,6 +4,9 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.jetbrainsKotlinSerialization)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlinCompose)
 }
 
 val localProperties = Properties()
@@ -14,12 +17,12 @@ if (localPropertiesFile.exists()) {
 
 android {
     namespace = "com.mgnovatto.uala"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.mgnovatto.uala"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -77,6 +80,13 @@ dependencies {
 
     implementation(libs.maps.compose)
     implementation(libs.play.services.maps)
+
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
+
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.kotlinx.serialization.converter)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

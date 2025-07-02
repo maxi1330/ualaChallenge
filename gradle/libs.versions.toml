@@ -1,20 +1,25 @@
 # En libs.versions.toml
 
 [versions]
-agp = "8.3.2"
-kotlin = "1.9.24"
+agp = "8.11.0"
+kotlin = "2.2.0"
 composeCompiler = "1.5.14"
-coreKtx = "1.13.1"
-activityCompose = "1.9.0"
-composeBom = "2024.06.00"
-lifecycle = "2.8.3"
-navigationCompose = "2.7.7"
-kotlinxSerializationJson = "1.6.3"
+coreKtx = "1.16.0"
+activityCompose = "1.10.1"
+composeBom = "2025.06.01"
+lifecycle = "2.9.1"
+navigationCompose = "2.9.0"
+kotlinxSerializationJson = "1.9.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-mapsCompose = "6.0.0"
+mapsCompose = "6.6.0"
 playServicesMaps = "19.2.0"
+hilt = "2.56.2"
+retrofit = "3.0.0"
+kotlinxSerializationConverter = "1.0.0"
+ksp = "2.2.0-2.0.2"
+hiltNavigationCompose = "1.2.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -36,10 +41,23 @@ kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+# Google Maps
 maps-compose = { group = "com.google.maps.android", name = "maps-compose", version.ref = "mapsCompose" }
 play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
+# Hilt
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+
+# Retrofit
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-kotlinx-serialization-converter = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "kotlinxSerializationConverter" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 jetbrainsKotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+kotlinCompose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

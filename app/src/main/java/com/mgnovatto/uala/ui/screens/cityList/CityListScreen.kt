@@ -15,12 +15,13 @@ import androidx.navigation.NavController
 import com.mgnovatto.uala.domain.model.City
 import com.mgnovatto.uala.ui.screens.cityList.components.CityListColumn
 import com.mgnovatto.uala.ui.screens.cityList.components.MapComposable
-import kotlinx.serialization.encodeToString
+import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.serialization.json.Json
 
 @Composable
 fun CityListScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: CityListViewModel = hiltViewModel()
 ) {
     var searchText by remember { mutableStateOf("") }
     var favoritesOnly by remember { mutableStateOf(false) }
