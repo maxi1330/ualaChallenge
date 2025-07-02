@@ -22,7 +22,7 @@ fun MapComposable(
     val defaultLocation = LatLng(-34.60, -58.38)
 
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(defaultLocation, 10f)
+        position = CameraPosition.fromLatLngZoom(defaultLocation, 11f)
     }
 
     val markerState = remember { MarkerState(position = defaultLocation) }
@@ -31,8 +31,8 @@ fun MapComposable(
         if (lat != null && lon != null) {
             val newPosition = LatLng(lat, lon)
             cameraPositionState.animate(
-                update = com.google.android.gms.maps.CameraUpdateFactory.newLatLngZoom(newPosition, 12f),
-                durationMs = 1000
+                update = com.google.android.gms.maps.CameraUpdateFactory.newLatLngZoom(newPosition, 11f),
+                durationMs = 800
             )
             markerState.position = newPosition
         }

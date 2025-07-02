@@ -21,9 +21,10 @@ fun CityListScreen() {
     var cities by remember {
         mutableStateOf(
             listOf(
-                City(707860, "La Plata", "AR", -34.60, -58.38, isFavorite = true),
-                City(519188, "Auckland", "NZ", 37.666668, 55.683334, isFavorite = true),
-                City(2643743, "London", "GB", -0.12574, 51.50853, isFavorite = false)
+                City(707860, "Ciudad Autónoma de Buenos Aires", "AR", -58.450001, -34.599998, isFavorite = true),
+                City(2193733, "Auckland", "NZ", 174.766663, -36.866669, isFavorite = true),
+                City(2643743, "London", "GB", -0.12574, 51.50853, isFavorite = false),
+                City(4542692, "Miami", "US", -80.533112, 25.61705, isFavorite = false)
             )
         )
     }
