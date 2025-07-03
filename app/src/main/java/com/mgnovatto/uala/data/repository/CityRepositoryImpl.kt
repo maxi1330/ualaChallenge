@@ -7,21 +7,25 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import com.mgnovatto.uala.data.local.db.CityDao
 import com.mgnovatto.uala.data.local.db.CityEntity
+import com.mgnovatto.uala.data.local.mappers.toDomain
 import com.mgnovatto.uala.data.local.mappers.toEntity
 import com.mgnovatto.uala.data.remote.ApiService
 import com.mgnovatto.uala.data.remote.mappers.toEntity
-import com.mgnovatto.uala.data.local.mappers.toDomain
 import com.mgnovatto.uala.domain.model.City
+import com.mgnovatto.uala.utils.WikiUtils
+import com.mgnovatto.uala.utils.getCountryNameFromCode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import javax.inject.Named
 
 class CityRepositoryImpl @Inject constructor(
-    private val apiService: ApiService,
-    private val cityDao: CityDao
-) : CityRepository {
+    @Named("CityApiService") private val cityApiService: ApiService,
+    @Named("WikipediaApiService") private val wikipediaApiService: ApiService,
+    private val cityDao: CityDao,
+    ) : CityRepository {
 
     override suspend fun downloadCities(): Boolean {
         return withContext(Dispatchers.IO) {
@@ -34,7 +38,7 @@ class CityRepositoryImpl @Inject constructor(
 
             try {
                 Log.i("CityRepository", "Iniciando descarga...")
-                val cities = apiService.downloadCities()
+                val cities = cityApiService.downloadCities()
 
                 val cityEntities = cities.map { it.toEntity() }
                 cityDao.insertAll(cityEntities)
@@ -71,5 +75,38 @@ class CityRepositoryImpl @Inject constructor(
 
     override suspend fun toggleFavorite(city: City) {
         cityDao.updateCity(city.copy(isFavorite = !city.isFavorite).toEntity())
+    }
+
+    override suspend fun getCityDescription(cityName: String, countryCode: String): String? {
+        return withContext(Dispatchers.IO) {
+            try {
+                var response =
+                    wikipediaApiService.getWikipediaExtract(titles = "$cityName, ${getCountryNameFromCode(countryCode)}")
+                var firstPage = response.query?.pages?.values?.firstOrNull()
+                val rawExtract = firstPage?.extract
+
+                //https://es.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&format=json&redirects=1&titles=London
+                if (WikiUtils.isValidDescription(rawExtract)) {
+                    return@withContext WikiUtils.cleanWikipediaExtract(rawExtract)
+                }
+
+                Log.d(
+                    "CityRepository",
+                    "Búsqueda específica falló, reintentando."
+                )
+                response = wikipediaApiService.getWikipediaExtract(titles = cityName)
+                firstPage = response.query?.pages?.values?.firstOrNull()
+                val secondAttemptExtract = firstPage?.extract
+
+                if (WikiUtils.isValidDescription(secondAttemptExtract)) {
+                    return@withContext WikiUtils.cleanWikipediaExtract(secondAttemptExtract)
+                }
+
+                return@withContext null
+            } catch (e: Exception) {
+                Log.e("CityRepository", "Error en Wikipedia")
+                null
+            }
+        }
     }
 }

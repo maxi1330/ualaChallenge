@@ -8,4 +8,6 @@ interface CityRepository {
     suspend fun downloadCities(): Boolean
     fun getPaginatedCities(query: String, favoritesOnly: Boolean): Flow<PagingData<City>>
     suspend fun toggleFavorite(city: City)
+
+    suspend fun getCityDescription(cityName: String, countryCode: String): String?
 }

@@ -17,6 +17,7 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -25,10 +26,23 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideApiService(): ApiService {
+    @Named("CityApiService")
+    fun provideCityApiService(): ApiService {
         val json = Json { ignoreUnknownKeys = true }
         return Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
+            .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
+            .build()
+            .create(ApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    @Named("WikipediaApiService")
+    fun provideWikipediaApiService(): ApiService {
+        val json = Json { ignoreUnknownKeys = true }
+        return Retrofit.Builder()
+            .baseUrl("https://es.wikipedia.org/w/")
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .build()
             .create(ApiService::class.java)
@@ -52,7 +66,12 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideCityRepository(api: ApiService, cityDao: CityDao): CityRepository {
-        return CityRepositoryImpl(api, cityDao)
+    fun provideCityRepository(
+        @Named("CityApiService") cityApi: ApiService,
+        @Named("WikipediaApiService") wikipediaApi: ApiService,
+        cityDao: CityDao
+    ): CityRepository {
+        return CityRepositoryImpl(cityApi, wikipediaApi, cityDao)
     }
+
 }

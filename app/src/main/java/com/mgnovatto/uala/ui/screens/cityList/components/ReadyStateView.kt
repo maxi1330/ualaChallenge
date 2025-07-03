@@ -38,7 +38,7 @@ fun ReadyStateView(
         ) {
             val isLandscape = maxWidth > 600.dp
 
-            if (isLandscape && selectedCity == null) {
+            if (isLandscape && selectedCity == null && cities.itemCount > 0) {
                 val firstCity = cities.peek(0)
                 if (firstCity != null) {
                     selectedCity = firstCity
