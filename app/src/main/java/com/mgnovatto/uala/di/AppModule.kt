@@ -1,14 +1,18 @@
 package com.mgnovatto.uala.di
 
+import android.content.Context
+import androidx.room.Room
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.mgnovatto.uala.BuildConfig
+import com.mgnovatto.uala.data.local.db.AppDatabase
+import com.mgnovatto.uala.data.local.db.CityDao
 import com.mgnovatto.uala.data.remote.ApiService
 import com.mgnovatto.uala.data.repository.CityRepository
 import com.mgnovatto.uala.data.repository.CityRepositoryImpl
-import com.mgnovatto.uala.data.store.UserDataStore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -32,7 +36,23 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideCityRepository(api: ApiService, dataStore: UserDataStore): CityRepository {
-        return CityRepositoryImpl(api, dataStore)
+    fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
+        return Room.databaseBuilder(
+            context,
+            AppDatabase::class.java,
+            "cities_db"
+        ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideCityDao(database: AppDatabase): CityDao {
+        return database.cityDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideCityRepository(api: ApiService, cityDao: CityDao): CityRepository {
+        return CityRepositoryImpl(api, cityDao)
     }
 }
