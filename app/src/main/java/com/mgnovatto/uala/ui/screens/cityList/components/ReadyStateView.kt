@@ -1,6 +1,5 @@
 package com.mgnovatto.uala.ui.screens.cityList.components
 
-import android.net.Uri
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,35 +12,24 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import androidx.paging.compose.LazyPagingItems
 import com.mgnovatto.uala.domain.model.City
-import kotlinx.serialization.json.Json
 
 @Composable
 fun ReadyStateView(
-    navController: NavController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    cities: LazyPagingItems<City>,
+    searchText: String,
+    favoritesOnly: Boolean,
+    onSearchTextChange: (String) -> Unit,
+    onFavoritesOnlyChange: (Boolean) -> Unit,
+    onToggleFavorite: (City) -> Unit,
+    onCityClick: (City) -> Unit,
+    onInfoClick: (City) -> Unit
 ) {
     Scaffold(modifier = modifier) { paddingValues ->
-        var searchText by remember { mutableStateOf("") }
-        var favoritesOnly by remember { mutableStateOf(false) }
-        var cities by remember {
-            mutableStateOf(
-                listOf(
-                    City(707860, "Ciudad Autónoma de Buenos Aires", "AR", -58.450001, -34.599998, isFavorite = true),
-                    City(2193733, "Auckland", "NZ", 174.766663, -36.866669, isFavorite = true),
-                    City(2643743, "London", "GB", -0.12574, 51.50853, isFavorite = false),
-                    City(4542692, "Miami", "US", -80.533112, 25.61705, isFavorite = false)
-                )
-            )
-        }
-        var selectedCity by remember { mutableStateOf<City?>(null) }
 
-        val filteredCities = cities.filter { city ->
-            val matchesSearch = city.name.startsWith(searchText, ignoreCase = true)
-            val matchesFavorite = !favoritesOnly || city.isFavorite
-            matchesSearch && matchesFavorite
-        }
+        var selectedCity by remember { mutableStateOf<City?>(null) }
 
         BoxWithConstraints(
             modifier = Modifier
@@ -50,30 +38,27 @@ fun ReadyStateView(
         ) {
             val isLandscape = maxWidth > 600.dp
 
-            if (filteredCities.isNotEmpty() && selectedCity == null) {
-                selectedCity = filteredCities.first()
+            if (isLandscape && selectedCity == null) {
+                val firstCity = cities.peek(0)
+                if (firstCity != null) {
+                    selectedCity = firstCity
+                }
             }
 
             if (isLandscape) {
                 Row(Modifier.fillMaxSize()) {
                     CityListColumn(
                         modifier = Modifier.weight(0.4f),
+                        cities = cities,
                         searchText = searchText,
-                        onSearchTextChange = { searchText = it },
+                        onSearchTextChange = onSearchTextChange,
                         favoritesOnly = favoritesOnly,
-                        onFavoritesOnlyChange = { favoritesOnly = it },
-                        cities = filteredCities,
-                        onToggleFavorite = { cityId ->
-                            cities =
-                                cities.map { if (it.id == cityId) it.copy(isFavorite = !it.isFavorite) else it }
-                        },
+                        onFavoritesOnlyChange = onFavoritesOnlyChange,
+                        onToggleFavorite = onToggleFavorite,
                         onCityClick = { city ->
                             selectedCity = city
                         },
-                        onInfoClick = { city ->
-                            val cityJson = Json.encodeToString(city)
-                            navController.navigate("detail/${Uri.encode(cityJson)}")
-                        }
+                        onInfoClick = onInfoClick
                     )
                     MapComposable(
                         modifier = Modifier.weight(0.6f),
@@ -85,23 +70,14 @@ fun ReadyStateView(
             } else {
                 CityListColumn(
                     modifier = Modifier.fillMaxSize(),
+                    cities = cities,
                     searchText = searchText,
-                    onSearchTextChange = { searchText = it },
+                    onSearchTextChange = onSearchTextChange,
                     favoritesOnly = favoritesOnly,
-                    onFavoritesOnlyChange = { favoritesOnly = it },
-                    cities = filteredCities,
-                    onToggleFavorite = { cityId ->
-                        cities =
-                            cities.map { if (it.id == cityId) it.copy(isFavorite = !it.isFavorite) else it }
-                    },
-                    onCityClick = { city ->
-                        val cityJson = Json.encodeToString(city)
-                        navController.navigate("map/${Uri.encode(cityJson)}")
-                    },
-                    onInfoClick = { city ->
-                        val cityJson = Json.encodeToString(city)
-                        navController.navigate("detail/${Uri.encode(cityJson)}")
-                    }
+                    onFavoritesOnlyChange = onFavoritesOnlyChange,
+                    onToggleFavorite = onToggleFavorite,
+                    onCityClick = onCityClick,
+                    onInfoClick = onInfoClick
                 )
             }
         }
