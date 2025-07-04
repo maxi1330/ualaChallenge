@@ -20,7 +20,7 @@ import org.junit.Before
 import org.junit.Test
 
 /**
- * This class verifies the business logic and state management of the ViewModel.
+ * This class verifies the operation of the CityListViewModel
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 class CityListViewModelTest {

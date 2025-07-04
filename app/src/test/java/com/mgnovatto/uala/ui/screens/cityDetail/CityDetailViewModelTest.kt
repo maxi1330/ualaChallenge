@@ -16,8 +16,7 @@ import org.junit.Before
 import org.junit.Test
 
 /**
- * Unit tests for the [CityDetailViewModel].
- * This class verifies the logic for fetching and displaying a city's description.
+ * This class verifies the operation of the CityDetailViewModel
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 class CityDetailViewModelTest {
