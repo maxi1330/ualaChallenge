@@ -20,7 +20,7 @@ import javax.inject.Inject
 sealed class DownloadState {
     data object Loading : DownloadState()
     data object Ready : DownloadState()
-    data class Error(val message: String) : DownloadState()
+    data object Error : DownloadState()
 }
 
 @HiltViewModel
@@ -57,7 +57,7 @@ class CityListViewModel @Inject constructor(
             if (success == true) {
                 _downloadState.value = DownloadState.Ready
             } else {
-                _downloadState.value = DownloadState.Error("Falló la preparación de datos.")
+                _downloadState.value = DownloadState.Error
             }
         }
     }

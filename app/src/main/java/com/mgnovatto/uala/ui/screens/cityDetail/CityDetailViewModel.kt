@@ -14,14 +14,19 @@ class CityDetailViewModel @Inject constructor(
     private val repository: CityRepository
 ) : ViewModel() {
 
-    private val _description = MutableStateFlow<String?>("Cargando descripción...")
+    private val _description = MutableStateFlow<String?>("")
     val description: StateFlow<String?> = _description
 
-    fun fetchCityDescription(cityName: String, countryCode: String) {
+    fun fetchCityDescription(
+        cityName: String,
+        countryCode: String,
+        loadingText: String,
+        notFoundText: String
+    ) {
         viewModelScope.launch {
-            _description.value = "Cargando descripción..."
+            _description.value = loadingText
             val desc = repository.getCityDescription(cityName, countryCode)
-            _description.value = desc ?: "No se encontró descripción para esta ciudad."
+            _description.value = desc ?: notFoundText
         }
     }
 }

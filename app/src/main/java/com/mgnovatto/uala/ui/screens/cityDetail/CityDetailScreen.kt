@@ -17,10 +17,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.mgnovatto.uala.R
 import com.mgnovatto.uala.domain.model.City
 import com.mgnovatto.uala.ui.screens.cityDetail.components.CityDataCard
 import com.mgnovatto.uala.ui.screens.cityDetail.components.CityDescriptionCard
@@ -34,8 +36,16 @@ fun CityDetailScreen(
 ) {
     val description by viewModel.description.collectAsStateWithLifecycle()
 
+    val loadingText = stringResource(R.string.description_loading)
+    val notFoundText = stringResource(R.string.description_not_found)
+
     LaunchedEffect(Unit) {
-        viewModel.fetchCityDescription(city.name, city.country)
+        viewModel.fetchCityDescription(
+            city.name,
+            city.country,
+            loadingText,
+            notFoundText
+        )
     }
 
     Scaffold(
