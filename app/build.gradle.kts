@@ -93,6 +93,7 @@ dependencies {
     implementation(libs.play.services.maps)
 
     implementation(libs.hilt.android)
+    implementation(libs.androidx.navigation.testing.android)
     ksp(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
@@ -115,6 +116,8 @@ dependencies {
     androidTestImplementation(libs.androidx.paging.testing)
     androidTestImplementation(libs.hilt.android.testing)
     kspAndroidTest(libs.hilt.compiler)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+    kspAndroidTest(libs.kotlinx.coroutines.test)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.mockk.android)

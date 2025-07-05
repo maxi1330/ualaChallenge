@@ -46,7 +46,7 @@ class ErrorStateViewTest {
             UalaChallengeTheme {
                 ErrorStateView(
                     message = errorMessage,
-                    onRetry = { wasRetryClicked = true } // When called, set our flag to true
+                    onRetry = { wasRetryClicked = true }
                 )
             }
         }
