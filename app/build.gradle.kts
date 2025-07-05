@@ -41,10 +41,12 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "BASE_URL", "\"https://gist.githubusercontent.com/\"")
+            buildConfigField("String", "BASE_URL_GIT", "\"https://gist.githubusercontent.com/\"")
+            buildConfigField("String", "BASE_URL_WIKI", "\"https://es.wikipedia.org/w/\"")
         }
         release {
-            buildConfigField("String", "BASE_URL", "\"https://gist.githubusercontent.com/\"")
+            buildConfigField("String", "BASE_URL_GIT", "\"https://gist.githubusercontent.com/\"")
+            buildConfigField("String", "BASE_URL_WIKI", "\"https://es.wikipedia.org/w/\"")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),

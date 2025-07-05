@@ -55,6 +55,23 @@ La app adapta dinámicamente su diseño en función del espacio disponible en pa
 
 Para enriquecer los detalles de cada ciudad, la app realiza una consulta en tiempo real a la API pública de Wikipedia al abrir el detalle. Se muestra una breve descripción (si existe), sin necesidad de almacenar esos datos localmente.
 
+## Configuración y Buenas Prácticas
+
+- **Base URLs configurables por entorno:**  
+  Las URLs base para las APIs (ciudades y Wikipedia) se definen en el archivo `build.gradle` usando `buildConfigField`, permitiendo cambiar fácilmente los endpoints según el tipo de build (`debug`, `release`, etc.).
+
+- **Clave de API protegida:**  
+  La API Key de Google Maps se almacena en `local.properties` y **no está versionada en Git**, evitando su exposición pública. Esto permite mantener la seguridad y facilita la configuración del proyecto por parte de otros desarrolladores.
+
+- **Persistencia eficiente:**  
+  Se evita el consumo innecesario de red y RAM cacheando los datos localmente y utilizando paginación para cargar solo lo necesario.
+
+- **Indexado en base de datos:**  
+  Se definieron índices en campos clave (`name`) de la base de datos Room para optimizar la performance de las búsquedas.
+
+- **Gestión segura de secretos y recursos sensibles:**  
+  Se siguen buenas prácticas de exclusión en `.gitignore` para archivos como `local.properties`, y no se hardcodean claves o URLs sensibles en el código fuente.
+
 ## Navegación
 
 La navegación se implementó con **Navigation Compose**. Las pantallas disponibles son:
@@ -79,3 +96,8 @@ La navegación se implementó con **Navigation Compose**. Las pantallas disponib
 
 - **Tests Unitarios:** Para los ViewModels y el Repositorio, verificando la lógica de negocio y el manejo de estado de forma aislada.
 - **Tests de UI:** Para los componentes de Compose, verificando que la UI se renderiza correctamente y responde a las interacciones del usuario.
+
+## 🔐 Acceso a claves y configuración privada
+
+Por razones de seguridad, las claves sensibles y endpoints no están versionados en el repositorio
+> 📩 Si necesitás acceder a estas configuraciones para compilar o probar la app, podés solicitar acceso escribiéndome directamente.

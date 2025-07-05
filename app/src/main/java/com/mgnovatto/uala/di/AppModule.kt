@@ -51,7 +51,7 @@ object AppModule {
     fun provideCityApiService(): ApiService {
         val json = Json { ignoreUnknownKeys = true }
         return Retrofit.Builder()
-            .baseUrl(BuildConfig.BASE_URL)
+            .baseUrl(BuildConfig.BASE_URL_GIT)
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .build()
             .create(ApiService::class.java)
@@ -71,7 +71,7 @@ object AppModule {
     fun provideWikipediaApiService(): ApiService {
         val json = Json { ignoreUnknownKeys = true }
         return Retrofit.Builder()
-            .baseUrl("https://es.wikipedia.org/w/")
+            .baseUrl(BuildConfig.BASE_URL_WIKI)
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .build()
             .create(ApiService::class.java)
