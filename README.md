@@ -99,5 +99,5 @@ La navegación se implementó con **Navigation Compose**. Las pantallas disponib
 
 ## 🔐 Acceso a claves y configuración privada
 
-Por razones de seguridad, las claves sensibles y endpoints no están versionados en el repositorio
+Por razones de seguridad, las claves sensibles (Apikey google maps) no están versionados en el repositorio
 > 📩 Si necesitás acceder a estas configuraciones para compilar o probar la app, podés solicitar acceso escribiéndome directamente.
