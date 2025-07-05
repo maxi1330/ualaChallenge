@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
@@ -26,7 +27,7 @@ fun ErrorStateView(
     onRetry: () -> Unit
 ) {
     Box(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize().testTag("ErrorStateView"),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -45,7 +46,10 @@ fun ErrorStateView(
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(16.dp))
-            Button(onClick = onRetry) {
+            Button(
+                onClick = onRetry,
+                modifier = Modifier.testTag("retry_button")
+            ) {
                 Text("Reintentar")
             }
         }

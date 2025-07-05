@@ -14,6 +14,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
@@ -73,5 +75,9 @@ object AppModule {
     ): CityRepository {
         return CityRepositoryImpl(cityApi, wikipediaApi, cityDao)
     }
+
+    @Provides
+    @Named("dispatcher")
+    fun provideIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
 
 }

@@ -5,8 +5,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.mgnovatto.uala.data.repository.CityRepository
+import com.mgnovatto.uala.di.IoDispatcher
 import com.mgnovatto.uala.domain.model.City
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,6 +19,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
 import javax.inject.Inject
+import javax.inject.Named
 
 sealed class DownloadState {
     data object Loading : DownloadState()
@@ -25,7 +29,8 @@ sealed class DownloadState {
 
 @HiltViewModel
 class CityListViewModel @Inject constructor(
-    private val repository: CityRepository
+    private val repository: CityRepository,
+    @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _downloadState = MutableStateFlow<DownloadState>(DownloadState.Loading)
@@ -47,7 +52,7 @@ class CityListViewModel @Inject constructor(
 
 
     private fun prepareInitialData() {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             _downloadState.value = DownloadState.Loading
 
             val success = withTimeoutOrNull(60000L) {
@@ -78,7 +83,7 @@ class CityListViewModel @Inject constructor(
     }
 
     fun onToggleFavorite(city: City) {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher)  {
             repository.toggleFavorite(city)
         }
     }

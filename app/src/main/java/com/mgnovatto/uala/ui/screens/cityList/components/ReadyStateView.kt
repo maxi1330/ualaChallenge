@@ -11,6 +11,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import com.mgnovatto.uala.domain.model.City
@@ -27,7 +28,9 @@ fun ReadyStateView(
     onCityClick: (City) -> Unit,
     onInfoClick: (City) -> Unit
 ) {
-    Scaffold(modifier = modifier) { paddingValues ->
+    Scaffold(
+        modifier = modifier.testTag("ReadyStateView")
+    ) { paddingValues ->
 
         var selectedCity by remember { mutableStateOf<City?>(null) }
 

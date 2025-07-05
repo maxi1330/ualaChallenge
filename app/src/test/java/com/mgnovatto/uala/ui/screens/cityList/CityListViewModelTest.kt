@@ -11,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -29,11 +30,6 @@ class CityListViewModelTest {
     private val testDispatcher = StandardTestDispatcher()
     private lateinit var viewModel: CityListViewModel
 
-    @Before
-    fun setUp() {
-        Dispatchers.setMain(testDispatcher)
-    }
-
     @After
     fun tearDown() {
         Dispatchers.resetMain()
@@ -47,7 +43,8 @@ class CityListViewModelTest {
         coEvery { mockRepository.downloadCities() } returns true
 
         // When: The ViewModel is initialized.
-        viewModel = CityListViewModel(mockRepository)
+        viewModel = CityListViewModel(mockRepository, testDispatcher)
+
         testDispatcher.scheduler.advanceUntilIdle()
 
         // Then: The final download state should be Ready.
@@ -60,7 +57,7 @@ class CityListViewModelTest {
         coEvery { mockRepository.downloadCities() } returns false
 
         // When: The ViewModel is initialized.
-        viewModel = CityListViewModel(mockRepository)
+        viewModel = CityListViewModel(mockRepository, testDispatcher)
         testDispatcher.scheduler.advanceUntilIdle()
 
         // Then: The final download state should be Error.
@@ -71,7 +68,7 @@ class CityListViewModelTest {
     fun `given download fails, when retry is called, then download is attempted again`() = runTest {
         // Given: The repository will fail the first time, but succeed the second time.
         coEvery { mockRepository.downloadCities() } returnsMany listOf(false, true)
-        viewModel = CityListViewModel(mockRepository)
+        viewModel = CityListViewModel(mockRepository, testDispatcher)
         testDispatcher.scheduler.advanceUntilIdle()
         assertEquals(DownloadState.Error, viewModel.downloadState.value) // Verify initial failure
 
@@ -88,7 +85,7 @@ class CityListViewModelTest {
     fun `when onSearchTextChange is called, then searchText state is updated`() = runTest {
         // Given: A successfully initialized ViewModel.
         coEvery { mockRepository.downloadCities() } returns true
-        viewModel = CityListViewModel(mockRepository)
+        viewModel = CityListViewModel(mockRepository, testDispatcher)
         testDispatcher.scheduler.advanceUntilIdle()
         val newText = "London"
 
@@ -103,7 +100,7 @@ class CityListViewModelTest {
     fun `when onFavoritesOnlyChange is called, then favoritesOnly state is updated`() = runTest {
         // Given: A successfully initialized ViewModel.
         coEvery { mockRepository.downloadCities() } returns true
-        viewModel = CityListViewModel(mockRepository)
+        viewModel = CityListViewModel(mockRepository, testDispatcher)
         testDispatcher.scheduler.advanceUntilIdle()
 
         // When: The favorites filter is enabled.
@@ -118,7 +115,7 @@ class CityListViewModelTest {
         // Given: A successfully initialized ViewModel and a test city.
         coEvery { mockRepository.downloadCities() } returns true
         val testCity = City(id = 1, name = "Test City", country = "TC", lon = 0.0, lat = 0.0, isFavorite = false)
-        viewModel = CityListViewModel(mockRepository)
+        viewModel = CityListViewModel(mockRepository, testDispatcher)
         testDispatcher.scheduler.advanceUntilIdle()
 
         // When: The toggle favorite function is called.
@@ -134,7 +131,7 @@ class CityListViewModelTest {
         // Given: A successfully initialized ViewModel.
         coEvery { mockRepository.downloadCities() } returns true
         coEvery { mockRepository.getPaginatedCities(any(), any()) } returns flowOf(PagingData.empty())
-        viewModel = CityListViewModel(mockRepository)
+        viewModel = CityListViewModel(mockRepository, testDispatcher)
         testDispatcher.scheduler.advanceUntilIdle()
 
         viewModel.cities.test {
