@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">UalaChallenge</string>
     <string name="description_loading">Cargando descripción...</string>
+    <string name="downloading_initial_data">Descargando datos iniciales...</string>
     <string name="description_not_found">No se encontró descripción para esta ciudad.</string>
     <string name="download_error_message">Falló la preparación de datos.</string>
+    <string name="back">Volver</string>
 </resources>

@@ -14,6 +14,14 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
+
+/**
+ * Displays a row with an icon, a bold label, and a corresponding value.
+ *
+ * @param icon The icon to display at the start of the row.
+ * @param label The label text shown in bold before the value.
+ * @param value The value text displayed after the label.
+ */
 @Composable
 fun InfoRow(icon: ImageVector, label: String, value: String) {
     Row(verticalAlignment = Alignment.CenterVertically) {

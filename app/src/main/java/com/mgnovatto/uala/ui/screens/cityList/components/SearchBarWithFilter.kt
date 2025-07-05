@@ -25,6 +25,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
+/**
+ * Composable that displays a search bar with an optional filter toggle for favorite cities.
+ *
+ * @param modifier Modifier applied to the root row layout.
+ * @param searchText Current value of the search input.
+ * @param onSearchTextChange Callback triggered when the search input changes.
+ * @param favoritesOnly Whether the "favorites only" filter is currently active.
+ * @param onFavoritesOnlyChange Callback triggered when the filter toggle is clicked.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchBarWithFilter(

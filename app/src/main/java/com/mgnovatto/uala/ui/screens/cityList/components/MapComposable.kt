@@ -12,6 +12,21 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 
+
+/**
+ * A composable that displays a Google Map centered on a specified city's location.
+ *
+ * This composable initializes a camera position and a marker, and animates the map view
+ * when the provided latitude and longitude change.
+ *
+ * @param modifier The modifier to be applied to the GoogleMap.
+ * @param cityName The name of the city to be shown as the marker title.
+ * @param lat The latitude of the city.
+ * @param lon The longitude of the city.
+ *
+ * Note: [LaunchedEffect] is used here to animate the camera only when [lat] and [lon] change,
+ * keeping the camera in sync with the selected city.
+ */
 @Composable
 fun MapComposable(
     modifier: Modifier = Modifier,

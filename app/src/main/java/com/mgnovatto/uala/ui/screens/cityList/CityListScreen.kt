@@ -16,6 +16,18 @@ import com.mgnovatto.uala.ui.screens.cityList.components.LoadingStateView
 import com.mgnovatto.uala.ui.screens.cityList.components.ReadyStateView
 import kotlinx.serialization.json.Json
 
+
+/**
+ * UI entry point for displaying the list of cities.
+ *
+ * Depending on the current [DownloadState], this function shows:
+ * - a loading indicator,
+ * - an error message with a retry button,
+ * - or the list of cities with search and filters.
+ *
+ * @param navController Used to navigate to detail or map screens.
+ * @param viewModel ViewModel that provides state and actions for the city list.
+ */
 @Composable
 fun CityListScreen(
     navController: NavController,

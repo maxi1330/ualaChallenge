@@ -21,6 +21,17 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Named
 
+/**
+ * Implementation of the [CityRepository] interface.
+ *
+ * Handles city data operations, including:
+ * - Downloading and caching city data from a remote API.
+ * - Providing paginated access to cities stored locally.
+ * - Toggling a city's favorite status.
+ * - Fetching Wikipedia descriptions for cities, with a fallback if the full city-country name fails.
+ *
+ * Uses both a city API and the Wikipedia API via [ApiService] instances.
+ */
 class CityRepositoryImpl @Inject constructor(
     @Named("CityApiService") private val cityApiService: ApiService,
     @Named("WikipediaApiService") private val wikipediaApiService: ApiService,
@@ -85,7 +96,6 @@ class CityRepositoryImpl @Inject constructor(
                 var firstPage = response.query?.pages?.values?.firstOrNull()
                 val rawExtract = firstPage?.extract
 
-                //https://es.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&format=json&redirects=1&titles=London
                 if (WikiUtils.isValidDescription(rawExtract)) {
                     return@withContext WikiUtils.cleanWikipediaExtract(rawExtract)
                 }

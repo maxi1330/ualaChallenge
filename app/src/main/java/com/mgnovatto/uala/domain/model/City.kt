@@ -2,6 +2,9 @@ package com.mgnovatto.uala.domain.model
 
 import kotlinx.serialization.Serializable
 
+/**
+ * Represents a city with location and metadata.
+ */
 @Serializable
 data class City(
     val id: Int,

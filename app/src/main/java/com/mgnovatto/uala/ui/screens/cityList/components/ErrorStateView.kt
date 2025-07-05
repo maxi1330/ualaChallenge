@@ -20,6 +20,15 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
+/**
+ * A composable that displays an error message with a retry button.
+ *
+ * This view is typically shown when a data loading operation fails.
+ *
+ * @param modifier Modifier to be applied to the root container.
+ * @param message The error message to display.
+ * @param onRetry Callback triggered when the user clicks the retry button.
+ */
 @Composable
 fun ErrorStateView(
     modifier: Modifier = Modifier,

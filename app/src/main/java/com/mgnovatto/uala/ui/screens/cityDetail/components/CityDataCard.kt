@@ -20,6 +20,12 @@ import androidx.compose.ui.unit.dp
 import com.mgnovatto.uala.domain.model.City
 import com.mgnovatto.uala.utils.getCountryNameFromCode
 
+/**
+ * Displays a card containing basic data about a given city, such as country name,
+ * latitude, and longitude.
+ *
+ * @param city The city object containing geographic and country code information.
+ */
 @Composable
 fun CityDataCard(city: City) {
     Card(

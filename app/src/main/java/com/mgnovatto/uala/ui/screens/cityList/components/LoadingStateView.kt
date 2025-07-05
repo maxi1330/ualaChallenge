@@ -12,8 +12,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag // <-- 1. AÑADIR ESTE IMPORT
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.mgnovatto.uala.R
 
+
+/**
+ * A composable that displays a loading indicator and a loading message while the initial data is being downloaded.
+ *
+ * @param modifier Modifier to be applied to the root layout.
+ */
 @Composable
 fun LoadingStateView(modifier: Modifier = Modifier) {
     Box(
@@ -24,7 +32,7 @@ fun LoadingStateView(modifier: Modifier = Modifier) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text("Descargando datos iniciales...")
+            Text(stringResource(R.string.downloading_initial_data))
             Spacer(modifier = Modifier.height(16.dp))
             CircularProgressIndicator(
                 modifier = Modifier.testTag("loading_indicator")

@@ -23,6 +23,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.mgnovatto.uala.domain.model.City
 
+/**
+ * Composable that displays a single city row with its name, country, coordinates,
+ * and action icons for marking as favorite and viewing additional information.
+ *
+ * @param city The city to display.
+ * @param onToggleFavorite Called when the favorite icon is tapped.
+ * @param onRowClick Called when the entire row is tapped.
+ * @param onInfoClick Called when the info icon is tapped.
+ */
 @Composable
 fun CityRow(
     city: City,

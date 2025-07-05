@@ -16,6 +16,23 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import com.mgnovatto.uala.domain.model.City
 
+/**
+ * UI component that displays a list of cities with a search bar and filter,
+ * adapting its layout based on device orientation (portrait or landscape).
+ *
+ * In landscape mode, it splits the screen between the city list and a map view.
+ * In portrait mode, it shows only the list.
+ *
+ * @param modifier Modifier applied to the root layout.
+ * @param cities Paginated list of cities to display.
+ * @param searchText Current value of the search input.
+ * @param favoritesOnly Whether to filter only favorite cities.
+ * @param onSearchTextChange Callback when search text changes.
+ * @param onFavoritesOnlyChange Callback when the favorite-only toggle changes.
+ * @param onToggleFavorite Callback when a city is marked/unmarked as favorite.
+ * @param onCityClick Callback when a city row is clicked.
+ * @param onInfoClick Callback when the info button for a city is clicked.
+ */
 @Composable
 fun ReadyStateView(
     modifier: Modifier = Modifier,

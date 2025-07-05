@@ -12,6 +12,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 
+/**
+ * Displays a card containing a city's description.
+ *
+ * Shows a loading spinner if the description is still loading,
+ * and a default message if no description is available.
+ *
+ * @param description The description of the city to display, or null if not available.
+ */
 @Composable
 fun CityDescriptionCard(description: String?) {
     Card(

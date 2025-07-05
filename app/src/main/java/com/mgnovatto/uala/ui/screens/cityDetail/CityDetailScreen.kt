@@ -27,6 +27,18 @@ import com.mgnovatto.uala.domain.model.City
 import com.mgnovatto.uala.ui.screens.cityDetail.components.CityDataCard
 import com.mgnovatto.uala.ui.screens.cityDetail.components.CityDescriptionCard
 
+
+/**
+ * UI Composable for displaying details of a selected city.
+ *
+ * @param city The [City] object whose details are to be displayed.
+ * @param navController Navigation controller used to handle back navigation.
+ * @param viewModel The [CityDetailViewModel] that manages the screen's state and logic.
+ *
+ * Fetches the city description on first composition using [LaunchedEffect] to trigger the data
+ * loading side-effect, ensuring it only runs once when the screen is shown. Renders city data and
+ * description cards in a vertical list.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CityDetailScreen(
