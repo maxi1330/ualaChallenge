@@ -21,13 +21,8 @@ import org.junit.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 class CityDetailViewModelTest {
 
-    // A mock of the CityRepository to control its behavior during tests.
     private val mockRepository: CityRepository = mockk()
-
-    // A test dispatcher for controlling coroutine execution in tests.
     private val testDispatcher = StandardTestDispatcher()
-
-    // The ViewModel instance under test.
     private lateinit var viewModel: CityDetailViewModel
 
     /**

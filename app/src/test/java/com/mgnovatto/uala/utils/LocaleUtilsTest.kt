@@ -2,7 +2,6 @@ package com.mgnovatto.uala.utils
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.util.Locale
 
 /**
  * Unit tests for the utility functions in LocaleUtils.kt.

@@ -53,13 +53,11 @@ class CityRepositoryImplTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        // Mock Android framework classes and utility objects to prevent test failures in a JVM environment
         mockkStatic(Log::class)
         every { Log.i(any(), any()) } returns 0
         every { Log.d(any(), any()) } returns 0
         every { Log.e(any(), any()) } returns 0
         every { Log.e(any(), any(), any()) } returns 0
-        // Add mock for isLoggable, which is used by the Paging library internally
         every { Log.isLoggable(any(), any()) } returns false
 
         mockkObject(WikiUtils)
@@ -155,6 +153,27 @@ class CityRepositoryImplTest {
         verify(exactly = 0) { cityDao.getCitiesPagingSource(any()) }
     }
 
+    @Test
+    fun `getPaginatedCities returns empty paging source for unmatched input`() = runTest {
+        val query = "Zzxxyy"
+        val mockPagingSource: PagingSource<Int, CityEntity> = mockk(relaxed = true)
+        every { cityDao.getCitiesPagingSource(query) } returns mockPagingSource
+
+        repository.getPaginatedCities(query, favoritesOnly = false).first()
+
+        verify(exactly = 1) { cityDao.getCitiesPagingSource(query) }
+    }
+
+    @Test
+    fun `getPaginatedCities handles special characters without crashing`() = runTest {
+        val query = "!!!"
+        val mockPagingSource: PagingSource<Int, CityEntity> = mockk(relaxed = true)
+        every { cityDao.getCitiesPagingSource(query) } returns mockPagingSource
+
+        repository.getPaginatedCities(query, favoritesOnly = false).first()
+
+        verify(exactly = 1) { cityDao.getCitiesPagingSource(query) }
+    }
 
     // --- toggleFavorite Tests ---
 
