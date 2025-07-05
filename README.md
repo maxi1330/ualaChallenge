@@ -44,10 +44,12 @@ La aplicación sigue una arquitectura limpia moderna (**MVVM + Repository**).
 
 ## UI Responsive
 
-La app detecta automáticamente la orientación del dispositivo y adapta su layout:
+La app adapta dinámicamente su diseño en función del espacio disponible en pantalla, utilizando un umbral de **600dp de ancho** para decidir si mostrar una o dos vistas simultáneamente. Esta decisión se basa en el **ancho real de la pantalla** en lugar de la orientación del dispositivo.
 
-- En **portrait**, muestra una pantalla a la vez (lista, detalle o mapa).
-- En **landscape**, muestra la lista y el mapa simultáneamente.
+- En **pantallas angostas** (menores a 600dp, típicamente en portrait), muestra una única vista a la vez: lista, detalle o mapa.
+- En **pantallas anchas** (mayores a 600dp, típicamente en landscape, tablets, foldables desplegados o modo pantalla dividida), se muestra simultáneamente la lista de ciudades y el mapa.
+
+> Este enfoque basado en el ancho disponible ofrece mayor flexibilidad y mejor experiencia en dispositivos modernos, como teléfonos plegables o en modo ventana redimensionable, donde la orientación por sí sola no refleja correctamente el espacio útil.
 
 ## Integración con Wikipedia
 
