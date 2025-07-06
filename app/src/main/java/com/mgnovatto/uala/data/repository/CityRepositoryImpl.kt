@@ -88,28 +88,28 @@ class CityRepositoryImpl @Inject constructor(
 
     override suspend fun getCityDescription(cityName: String, countryCode: String): String? {
         return withContext(Dispatchers.IO) {
-            try {
-                var response =
-                    wikipediaApiService.getWikipediaExtract(titles = "$cityName, ${getCountryNameFromCode(countryCode)}")
-                var firstPage = response.query?.pages?.values?.firstOrNull()
-                val rawExtract = firstPage?.extract
-
-                if (WikiUtils.isValidDescription(rawExtract)) {
-                    return@withContext WikiUtils.cleanWikipediaExtract(rawExtract)
-                }
-
-                response = wikipediaApiService.getWikipediaExtract(titles = cityName)
-                firstPage = response.query?.pages?.values?.firstOrNull()
-                val secondAttemptExtract = firstPage?.extract
-
-                if (WikiUtils.isValidDescription(secondAttemptExtract)) {
-                    return@withContext WikiUtils.cleanWikipediaExtract(secondAttemptExtract)
-                }
-
-                return@withContext null
-            } catch (e: Exception) {
-                null
-            }
+            fetchValidDescription("$cityName, ${getCountryNameFromCode(countryCode)}")
+                ?: fetchValidDescription(cityName)
         }
+    }
+
+    /**
+     * Fetches and returns a valid, cleaned description from the Wikipedia API for the given title.
+     *
+     * This function performs the following steps:
+     * - Sends a request to the Wikipedia API using the provided title.
+     * - Extracts the summary text (extract) from the first result.
+     * - Validates the extract to ensure it's meaningful (not null, empty, or generic).
+     * - Cleans the extract using utility functions before returning it.
+     *
+     * @param titles The title to search for on Wikipedia, typically formatted as `"City, Country"` or simply `"City"`.
+     * @return A cleaned and valid description if available, or `null` otherwise.
+     */
+    private suspend fun fetchValidDescription(titles: String): String? {
+        val response = wikipediaApiService.getWikipediaExtract(titles = titles)
+        val extract = response.query?.pages?.values?.firstOrNull()?.extract
+        return if (WikiUtils.isValidDescription(extract)) {
+            WikiUtils.cleanWikipediaExtract(extract)
+        } else null
     }
 }

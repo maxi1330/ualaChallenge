@@ -9,8 +9,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
+import com.mgnovatto.uala.R
+
 
 /**
  * Displays a card containing a city's description.
@@ -30,7 +33,7 @@ fun CityDescriptionCard(description: String?) {
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Descripción",
+                text = stringResource(R.string.title_description_card),
                 style = MaterialTheme.typography.titleMedium
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -41,7 +44,7 @@ fun CityDescriptionCard(description: String?) {
                 }
             } else {
                 Text(
-                    text = description ?: "No se encontró descripción.",
+                    text = description ?: stringResource(R.string.description_not_found),
                     style = MaterialTheme.typography.bodyMedium,
                     fontStyle = if (description == null) FontStyle.Italic else FontStyle.Normal
                 )

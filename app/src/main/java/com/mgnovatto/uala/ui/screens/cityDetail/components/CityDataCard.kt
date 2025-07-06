@@ -16,7 +16,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.mgnovatto.uala.R
 import com.mgnovatto.uala.domain.model.City
 import com.mgnovatto.uala.utils.getCountryNameFromCode
 
@@ -43,24 +45,24 @@ fun CityDataCard(city: City) {
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
-                text = "Detalles",
+                text = stringResource(R.string.title_detail_card),
                 style = MaterialTheme.typography.titleMedium
             )
             Spacer(modifier = Modifier.height(8.dp))
 
             InfoRow(
                 icon = Icons.Default.Home,
-                label = "País",
+                label = stringResource(R.string.title_country_card),
                 value = countryName
             )
             InfoRow(
                 icon = Icons.Default.Place,
-                label = "Latitud",
+                label = stringResource(R.string.title_latitude_card),
                 value = "%.4f".format(city.lat)
             )
             InfoRow(
                 icon = Icons.Default.Place,
-                label = "Longitud",
+                label = stringResource(R.string.title_longitude_card),
                 value = "%.4f".format(city.lon)
             )
         }

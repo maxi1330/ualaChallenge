@@ -15,12 +15,14 @@ Por lo tanto, la decisión arquitectónica clave fue implementar una estrategia 
 
 - **Problema:** Cargar 200,000 objetos JSON en memoria para cada búsqueda es inviable.
 - **Solución:** La aplicación realiza una descarga única del archivo `cities.json` la primera vez que se ejecuta. Estos datos se procesan y se insertan masivamente en una base de datos local Room.
-- **Optimización:** Para mejorar aún más el rendimiento de las búsquedas, se definió un índice en el campo `name` en la entidad de Room. Esto permite que las consultas del tipo `LIKE` sean mucho más eficientes, especialmente cuando se trabaja con grandes volúmenes de datos.
+- **Optimización:**
+  - Se definió un índice en el campo `name` en la entidad de Room. Esto permite que las consultas del tipo `LIKE` sean mucho más eficientes, especialmente cuando se trabaja con grandes volúmenes de datos.
+  - Se implementó una estrategia de inserción en **bloques de 200 registros** (*chunks*) durante la carga inicial de ciudades. Esto permite que Room procese los datos de forma más eficiente, reduce el uso de memoria y evita bloqueos o errores relacionados con operaciones masivas sobre la base de datos.
 - **Ventajas:**
-    - **Bajo Consumo de Memoria:** La app nunca mantiene la lista completa en RAM. Solo se cargan los datos visibles.
-    - **Rendimiento de Búsqueda:** Se delega la lógica de filtrado por prefijo al motor de SQLite, optimizado con índices y ejecutado de forma paginada.
-    - **Persistencia:** Los datos, incluyendo los favoritos, se almacenan localmente y persisten entre sesiones de la app.
-
+  - **Bajo Consumo de Memoria:** La app nunca mantiene la lista completa en RAM. Solo se cargan los datos visibles.
+  - **Rendimiento de Búsqueda:** Se delega la lógica de filtrado por prefijo al motor de SQLite, optimizado con índices y ejecutado de forma paginada.
+  - **Persistencia:** Los datos, incluyendo los favoritos, se almacenan localmente y persisten entre sesiones de la app.
+  
 ### Jetpack Paging 3
 
 - **Problema:** Aunque la búsqueda en la base de datos es rápida, una consulta podría devolver miles de resultados, lo que volvería a causar problemas de memoria si se cargan todos a la vez.
