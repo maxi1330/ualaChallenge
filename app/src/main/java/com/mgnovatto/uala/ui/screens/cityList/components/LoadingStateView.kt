@@ -32,7 +32,9 @@ fun LoadingStateView(modifier: Modifier = Modifier) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(stringResource(R.string.downloading_initial_data))
+            Text(
+                text = stringResource(R.string.downloading_initial_data),
+                modifier = Modifier.testTag("loading_text"))
             Spacer(modifier = Modifier.height(16.dp))
             CircularProgressIndicator(
                 modifier = Modifier.testTag("loading_indicator")
