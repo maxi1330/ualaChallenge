@@ -1,6 +1,5 @@
 package com.mgnovatto.uala.data.repository
 
-import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -43,21 +42,20 @@ class CityRepositoryImpl @Inject constructor(
             val cityCount = cityDao.getCityCount()
 
             if (cityCount > 0) {
-                Log.i("CityRepository", "Los datos ya estan descargados.")
                 return@withContext true
             }
 
             try {
-                Log.i("CityRepository", "Iniciando descarga...")
                 val cities = cityApiService.downloadCities()
 
                 val cityEntities = cities.map { it.toEntity() }
-                cityDao.insertAll(cityEntities)
 
-                Log.i("CityRepository", "¡Descarga y guardado en DB exitosos!")
+                val chunkSize = 200
+                cityEntities.chunked(chunkSize).forEach { chunk ->
+                    cityDao.insertAll(chunk)
+                }
                 true
             } catch (e: Exception) {
-                Log.e("CityRepository", "Error descargando")
                 false
             }
         }
@@ -100,10 +98,6 @@ class CityRepositoryImpl @Inject constructor(
                     return@withContext WikiUtils.cleanWikipediaExtract(rawExtract)
                 }
 
-                Log.d(
-                    "CityRepository",
-                    "Búsqueda específica falló, reintentando."
-                )
                 response = wikipediaApiService.getWikipediaExtract(titles = cityName)
                 firstPage = response.query?.pages?.values?.firstOrNull()
                 val secondAttemptExtract = firstPage?.extract
@@ -114,7 +108,6 @@ class CityRepositoryImpl @Inject constructor(
 
                 return@withContext null
             } catch (e: Exception) {
-                Log.e("CityRepository", "Error en Wikipedia")
                 null
             }
         }
