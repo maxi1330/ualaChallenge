@@ -1,6 +1,6 @@
 # Desafío Técnico Ualá
 
-[🎥 Ver demo de la app en YouTube](https://youtu.be/NYe0LkEfT1w?si=PIpbkc3UWYxaQEMu)
+[🎥 Ver demo de la app en YouTube](https://www.youtube.com/watch?v=fWIxeFYjPYw)
 
 Esta es una aplicación de Android desarrollada en Kotlin como solución al desafío técnico propuesto. La aplicación permite a los usuarios explorar una lista de aproximadamente 200,000 ciudades, filtrarlas por nombre, marcarlas como favoritas y ver su ubicación en un mapa.  
 Dado el gran volumen de datos, se optó por almacenar las ciudades localmente en una base de datos Room. Esto permite que las búsquedas sean rápidas, escalables y persistentes entre sesiones. Además, se utilizó la librería Paging 3 para cargar los resultados de forma paginada, evitando problemas de rendimiento y consumo de memoria. Los favoritos también se guardan localmente en Room, y los datos se cachean luego de la primera descarga, eliminando la necesidad de múltiples descargas.
